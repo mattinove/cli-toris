@@ -87,9 +87,15 @@ inquirer.prompt(QUESTIONS)
       templatePath: path.join(__dirname, 'templates', answers['template']),
       targetPath: path.join(CURR_DIR, answers['name'])
     }
+    console.log(chalk.yellow('Creating project folder...'));
     if (createProjectFolder(opts.targetPath)) {
+      console.log(chalk.green('Created folder with success!'));
+      console.log(chalk.yellow('Creating folder content...'));
       createDirectoryContents(opts.templatePath, opts.projectName);
+      console.log(chalk.green('Created folder content with success!'));
+      console.log(chalk.yellow('Running postprocess commands...'));
       postProcess(opts);
+      console.log(chalk.green('Project configuration complete with success! Thank you for using cli-toris!'));
     }
     return;
   });
