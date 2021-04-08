@@ -65,11 +65,14 @@ function createDirectoryContents(templatePath: string, name: string) {
 
 function postProcess(options: CliOptions) {
   const isNode = fs.existsSync(path.join(options.templatePath, 'package.json'));
+  const isWebpack = fs.existsSync(path.join(options.templatePath, 'webpack.config.js'))
   if (isNode) {
     shell.cd(options.targetPath);
     const result = shell.exec('npm i');
-    if (result.code !== 0) {
-      return false;
+    if (result.code !== 0) return false;
+    if (isWebpack) {
+      const webpackCompile = shell.exec('npm run build');
+      if (webpackCompile.code != 0) return false;
     }
     return true;
   }
